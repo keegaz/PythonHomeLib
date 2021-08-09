@@ -4,4 +4,26 @@
 
 This is the home page
 
+<p>
+{% if title_book %}
+    The breed you entered is {{title_book}}
+    Update it in the form below:
+    {%else %}
+
+    Please enter the book name:
+
+{% endif %}
+</p>
+
+<form method="post">
+<!--Passing a form object on the connection -->
+  {{ form.hidden_tag() }}
+  {{ form.title_book.label }} {{form.title_book()}}
+  {{form.submit()}}
+
+
+</form>
+
+
+
 {%endblock%}

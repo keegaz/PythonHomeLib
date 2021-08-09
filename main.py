@@ -1,10 +1,22 @@
 from flask import Flask, render_template,request
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField
 
-app=Flask(__name__)
+app = Flask(__name__)
 
-@app.route('/')
+app.config['SECRET_KEY'] = 'mysecretkey'
+
+@app.route('/', methods=['GET','POST'])
 def index():
-    return render_template('home.html')
+    title_book = False
+
+    form = InfoForm()
+
+    if form.validate_on_submit():
+        title_book = form.title_book.data
+        form.title_book.data = " "
+    return render_template('home.html', form=form, title_book=title_book)
+
 
 
 @app.route('/books')
@@ -22,6 +34,23 @@ def thankYou():
     last  = request.args.get ('last_name')
 
     return render_template('thankyou.html', first=first, last=last)
+
+
+
+
+
+
+
+
+
+
+######################################
+
+class InfoForm(FlaskForm):
+
+    title_book = StringField("What is name of the book?")
+    author_book = StringField("What is the name of the author?")
+    submit = SubmitField('Submit')
 
 
 @app.errorhandler(404)
